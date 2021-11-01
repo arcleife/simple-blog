@@ -12,6 +12,7 @@ use Inertia\Inertia;
 
 use App\Models\User;
 use App\Models\Blog;
+use App\Models\Comment;
 
 class UserController extends Controller
 {
@@ -95,6 +96,11 @@ class UserController extends Controller
         $user_blogs = Blog::where('user_id', $user->id)->get();
         
         foreach ($user_blogs as $user_blog) {
+            $blog_comments = Comment::where('blog_id', $user_blog->id)->get();
+            foreach ($blog_comments as $blog_comment) {
+                $blog_comment->delete();
+            }
+
             $user_blog->delete();
         }
 
