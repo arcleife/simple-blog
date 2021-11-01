@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Redirect;
 class CommentController extends Controller
 {
     public function store(Request $request) {
-        // $request->validate([
-        //     'content' => 'required|string'
-        // ]);
+        $request->validate([
+            'content' => 'required|string'
+        ]);
 
         $blog_id = $request->get('blog_id');
 
@@ -26,8 +26,15 @@ class CommentController extends Controller
         return Redirect::route("blog", $blog_id);
     }
 
-    public function update() {
-        // 
+    public function update(Request $request, Comment $comment) {
+        $request->validate([
+            'content' => 'required|string'
+        ]);
+        $blog_id = $comment->blog_id;
+        
+        $comment->update($request->only('content'));
+
+        return Redirect::route("blog", $blog_id);
     }
 
     public function delete(Request $request, Comment $comment) {
