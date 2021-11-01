@@ -61,13 +61,11 @@
                                 class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
                                 @click="updateUser()">
                                 Update
-                            </button>
-                            <button 
+                            </button>                            
+                            <delete-user
                                 v-if="!isCurrentUser()"
-                                class="ml-2 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
-                                @click="deleteUser()" >
-                                Delete
-                            </button>
+                                @remove="deleteUser" 
+                                :user="user"></delete-user>
                         </div>
                     </div>
                 </div>
@@ -80,6 +78,7 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import BreezeInput from '@/Components/Input.vue'
 import BreezeLabel from '@/Components/Label.vue'
+import DeleteUser from '@/Modals/DeleteUser.vue'
 import { Head } from '@inertiajs/inertia-vue3';
 
 export const ID_USER = 0;
@@ -90,6 +89,7 @@ export default {
         BreezeAuthenticatedLayout,
         BreezeInput,
         BreezeLabel,
+        DeleteUser,
         Head,
     },
 

@@ -33,11 +33,9 @@
                         @click="editBlog()">
                         Edit
                     </button>
-                    <button 
-                        class="ml-2 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
-                        @click="deleteBlog()" >
-                        Delete
-                    </button>
+                    <delete-blog
+                        @remove="deleteBlog" 
+                        :blog="blog"></delete-blog>
                 </div>
             </div>
         </div>
@@ -49,7 +47,7 @@
                             <div class="border-b border-gray-200">
                                 <span class="font-semibold text-xl text-gray-800">Comments</span>
                             </div>
-                            <div v-for="comment in comments" class="border-b py-2 border-gray-200 grid grid-cols-1">
+                            <div v-for="(comment, index) in comments" class="border-b py-2 border-gray-200 grid grid-cols-1">
                                 <div class="mt-2">
                                     <p class="font-semibold text-md text-gray-800">{{ comment.content }}</p>
                                 </div>
@@ -61,11 +59,11 @@
                                             v-if="comment.user_id == $page.props.auth.user.id"
                                             @click="editComment(comment.id)">
                                             Edit</button>
-                                        <button 
-                                            class="font-italic text-sm text-gray-600 inline-flex items-center px-2 border border-gray-200 rounded-md text-xs hover:bg-gray-100 active:bg-gray-300 focus:outline-none focus:border-gray-300 focus:shadow-outline-gray transition ease-in-out duration-150"
+                                        
+                                        <delete-comment 
                                             v-if="comment.user_id == $page.props.auth.user.id"
-                                            @click="deleteComment(comment.id)">
-                                            Delete</button>
+                                            @remove="deleteComment" 
+                                            :comment="comment"></delete-comment>
                                     </div>
                                 </div>
                             </div>
@@ -97,6 +95,8 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import BreezeLabel from '@/Components/Label.vue'
 import BreezeButton from '@/Components/Button.vue'
+import DeleteBlog from '@/Modals/DeleteBlog.vue'
+import DeleteComment from '@/Modals/DeleteComment.vue'
 import { Head } from '@inertiajs/inertia-vue3';
 
 export default {
@@ -104,6 +104,8 @@ export default {
         BreezeAuthenticatedLayout,
         BreezeLabel,
         BreezeButton,
+        DeleteBlog,
+        DeleteComment,
         Head,
     },
 
@@ -118,7 +120,7 @@ export default {
                 content: '',
                 blog_id: this.blog.id,
                 user_id: this.$page.props.auth.user.id
-            }
+            },
         }
     },
 
