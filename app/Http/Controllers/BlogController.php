@@ -120,6 +120,12 @@ class BlogController extends Controller
 
     public function delete(Request $request, Blog $blog) {
         // delete blog
+        $blog_comments = Comment::where('blog_id', $blog->id)->get();
+        
+        foreach ($blog_comments as $blog_comment) {
+            $blog_comment->delete();
+        }
+        
         $blog->delete();
 
         return Redirect::route("dashboard");
