@@ -54,11 +54,10 @@
                                 <div class="flex flex-row-reverse justify-between">
                                     <span class="font-italic text-sm text-gray-600">by {{ comment.username }} ({{ comment.date }})</span>
                                     <div class="space-x-1">
-                                        <button 
-                                            class="font-italic text-sm text-gray-600 inline-flex items-center px-2 border border-gray-200 rounded-md text-xs hover:bg-gray-100 active:bg-gray-300 focus:outline-none focus:border-gray-300 focus:shadow-outline-gray transition ease-in-out duration-150"
+                                        <edit-comment 
                                             v-if="comment.user_id == $page.props.auth.user.id"
-                                            @click="editComment(comment.id)">
-                                            Edit</button>
+                                            @edit="editComment" 
+                                            :comment="comment"></edit-comment>
                                         
                                         <delete-comment 
                                             v-if="comment.user_id == $page.props.auth.user.id"
@@ -97,6 +96,7 @@ import BreezeLabel from '@/Components/Label.vue'
 import BreezeButton from '@/Components/Button.vue'
 import DeleteBlog from '@/Modals/DeleteBlog.vue'
 import DeleteComment from '@/Modals/DeleteComment.vue'
+import EditComment from '@/Modals/EditComment.vue'
 import { Head } from '@inertiajs/inertia-vue3';
 
 export default {
@@ -106,6 +106,7 @@ export default {
         BreezeButton,
         DeleteBlog,
         DeleteComment,
+        EditComment,
         Head,
     },
 
@@ -147,8 +148,11 @@ export default {
             });
         },
         
-        editComment(comment_id) {
-            console.log(comment_id, "EDIT COMMENT")
+        editComment(comment, newContent) {
+            const data = new FormData();
+            data.append('content', newContent || '');
+            data.append('_method', 'post');
+            this.$inertia.post(this.route("comment.update", comment.id), data);
         },
         
         deleteComment(comment_id) {

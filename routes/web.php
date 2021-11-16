@@ -70,6 +70,9 @@ Route::delete('/user/{user}', [UserController::class, 'delete'])->name('user.del
 Route::post('/comment', [CommentController::class, 'store'])->name('comment.store')
     ->middleware(['auth', 'verified']);
 
+Route::post('/comment/{comment}', [CommentController::class, 'update'])->name('comment.update')
+    ->middleware(['auth', 'verified']);
+
 Route::delete('/comment/{comment}', [CommentController::class, 'delete'])->name('comment.delete')
     ->middleware(['auth', 'verified']);
 
